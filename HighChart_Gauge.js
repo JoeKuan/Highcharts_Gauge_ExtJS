@@ -55,7 +55,11 @@ function setValue(val) {
     
     var path = [
          'M',
-         centerX, centerY,
+         centerX-1, centerY,
+         'L',
+         centerX + (dialSize - 50) * Math.cos(angle), centerY + (dialSize - 50) * Math.sin(angle)
+         ,'M',
+         centerX+1, centerY,
          'L',
          centerX + (dialSize - 50) * Math.cos(angle), centerY + (dialSize - 50) * Math.sin(angle)
      ];
@@ -63,8 +67,8 @@ function setValue(val) {
     if (!pivot) {
         pivot = renderer.path(path)
         .attr({
-            stroke: 'black',
-            'stroke-width': 3
+            stroke: '#555555',
+            'stroke-width': 1,
         })
         .add();
     } else {
@@ -103,14 +107,14 @@ function setValueAnim(val) {
 renderer.arc(centerX, centerY, dialSize, 0, minAngle, maxAngle)
     .attr({
         fill: {
-            linearGradient: [0, 0, 0, 200],
+            linearGradient: [0, 50, 50, 200],
             stops: [
                 [0, '#FFF'],
-                [1, '#DDD']
+                [1, '#B1B1B1']
             ]
         },
         stroke: 'silver',
-        'stroke-width': 1
+        'stroke-width': 2
     })
     .add();
 
@@ -126,7 +130,13 @@ $.each(ranges, function(i, rangesOptions) {
         valueToAngle(rangesOptions.to)
     )
     .attr({
-        fill: rangesOptions.color
+        fill: {
+          linearGradient: rangesOptions.linearGradient,
+	  stops: [
+             [0, rangesOptions.fromColor ],
+	     [1, rangesOptions.toColor ]
+	  ]
+	} 
     })
     .add();
 });
@@ -170,8 +180,14 @@ setSubtitle(options.subtitle);
 // center disc
 renderer.circle(centerX, centerY, 5)
     .attr({
-        fill: '#4572A7',
-        stroke: 'black',
+        fill: {
+          linearGradient: [ 50, 150, 150, 200 ],
+	  stops: [
+	    [ 0, '#FFFFFF' ],
+	    [ 1, '#C0C0C0' ]
+	  ]  
+	},
+        stroke: '#818181',
         'stroke-width': 1
     })
     .add();
